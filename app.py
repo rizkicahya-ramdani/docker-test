@@ -1,9 +1,17 @@
-import math
+from flask import Flask, render_template, request
 
-def hitung_luas_lingkaran(jari_jari):
-    return math.pi * jari_jari ** 2
+app = Flask(__name__)
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    luas = None
+    if request.method == "POST":
+        try:
+            r = float(request.form["jari_jari"])
+            luas = 3.14 * r * r
+        except:
+            luas = "Input tidak valid"
+    return render_template("index.html", hasil=luas)
 
 if __name__ == "__main__":
-    r = float(input("Masukkan jari-jari lingkaran: "))
-    luas = hitung_luas_lingkaran(r)
-    print(f"Luas lingkaran dengan jari-jari {r} adalah {luas:.2f}")
+    app.run(host="0.0.0.0", port=5000)
